@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
-import { Order } from '@/lib/api';
+import { useEffect, useRef } from "react";
+import { Order } from "@/lib/api";
 
 interface DeliveryMapProps {
   orders: Order[];
@@ -12,17 +12,17 @@ export function DeliveryMap({ orders }: DeliveryMapProps) {
   const mapInstanceRef = useRef<any>(null);
 
   useEffect(() => {
-    if (typeof window === 'undefined' || !mapRef.current) return;
+    if (typeof window === "undefined" || !mapRef.current) return;
 
     const initMap = async () => {
-      const L = (await import('leaflet')).default;
-
-      await import('leaflet/dist/leaflet.css');
+      const L = (await import("leaflet")).default;
 
       const customIcon = L.icon({
-        iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-        iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+        iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+        iconRetinaUrl:
+          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+        shadowUrl:
+          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
         iconSize: [25, 41],
         iconAnchor: [12, 41],
         popupAnchor: [1, -34],
@@ -33,14 +33,17 @@ export function DeliveryMap({ orders }: DeliveryMapProps) {
         mapInstanceRef.current.remove();
       }
 
-      const defaultCenter: [number, number] = orders.length > 0
-        ? [orders[0].pickupLocation.lat, orders[0].pickupLocation.lng]
-        : [40.7128, -74.0060];
+      if (!mapRef.current) return;
+
+      const defaultCenter: [number, number] =
+        orders.length > 0
+          ? [orders[0].pickupLocation.lat, orders[0].pickupLocation.lng]
+          : [40.7128, -74.006];
 
       const map = L.map(mapRef.current).setView(defaultCenter, 12);
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors',
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "© OpenStreetMap contributors",
       }).addTo(map);
 
       const bounds: [number, number][] = [];
@@ -80,10 +83,10 @@ export function DeliveryMap({ orders }: DeliveryMapProps) {
             [order.deliveryLocation.lat, order.deliveryLocation.lng],
           ],
           {
-            color: '#2563eb',
+            color: "#2563eb",
             weight: 2,
             opacity: 0.6,
-            dashArray: '5, 10',
+            dashArray: "5, 10",
           }
         ).addTo(map);
       });
