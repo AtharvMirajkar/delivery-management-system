@@ -1,23 +1,35 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/lib/auth-context';
-import { api } from '@/lib/api';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useToast } from '@/hooks/use-toast';
-import { Truck } from 'lucide-react';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/lib/auth-context";
+import { api } from "@/lib/api";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
+import { Truck } from "lucide-react";
 
 export default function RegisterPage() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [phone, setPhone] = useState('');
-  const [role, setRole] = useState<'admin' | 'partner'>('partner');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [role, setRole] = useState<"admin" | "partner">("partner");
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const router = useRouter();
@@ -28,17 +40,24 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
-      const response = await api.register({ name, email, password, role, phone });
+      const response = await api.register({
+        name,
+        email,
+        password,
+        role,
+        phone,
+      });
       login(response.token, response.user);
       toast({
-        title: 'Registration successful',
+        title: "Registration successful",
         description: `Welcome, ${response.user.name}!`,
       });
     } catch (error) {
       toast({
-        title: 'Registration failed',
-        description: error instanceof Error ? error.message : 'Failed to register',
-        variant: 'destructive',
+        title: "Registration failed",
+        description:
+          error instanceof Error ? error.message : "Failed to register",
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
@@ -55,7 +74,9 @@ export default function RegisterPage() {
             </div>
           </div>
           <CardTitle className="text-2xl">Create Account</CardTitle>
-          <CardDescription>Register for delivery management system</CardDescription>
+          <CardDescription>
+            Register for delivery management system
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -105,18 +126,25 @@ export default function RegisterPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="role">Role</Label>
-              <Select value={role} onValueChange={(value) => setRole(value as 'admin' | 'partner')}>
+              <Select
+                value={role}
+                onValueChange={(value) => setRole(value as "admin" | "partner")}
+              >
                 <SelectTrigger id="role">
                   <SelectValue placeholder="Select role" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="partner">Delivery Partner</SelectItem>
-                  <SelectItem value="admin">Admin</SelectItem>
+                  {/* <SelectItem value="admin">Admin</SelectItem> */}
                 </SelectContent>
               </Select>
             </div>
-            <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={isLoading}>
-              {isLoading ? 'Creating account...' : 'Register'}
+            <Button
+              type="submit"
+              className="w-full bg-blue-600 hover:bg-blue-700"
+              disabled={isLoading}
+            >
+              {isLoading ? "Creating account..." : "Register"}
             </Button>
           </form>
           <div className="mt-4 text-center text-sm">
@@ -124,7 +152,7 @@ export default function RegisterPage() {
             <Button
               variant="link"
               className="p-0 h-auto text-blue-600"
-              onClick={() => router.push('/login')}
+              onClick={() => router.push("/login")}
             >
               Login here
             </Button>
